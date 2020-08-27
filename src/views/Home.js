@@ -25,13 +25,13 @@ class Home extends React.Component {
             </div>
             <div className="card-img-overlay header_overlay ">
               <div className="header_content">
-                <h1 className="card-title text-white ">Digital Art</h1>
+                <h1 className="card-title text-white ">Welcome back {this.props.name}</h1>
                 <p className="card-text text-white ">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ut   reiciendis
                 expedita quaerat et hic mollitia esse neque sunt modi eos quidem distinctio, illo possimus, quam culpa eum
                 unde autem maiores! Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos, enim non pariatur
                 voluptate repellendus, id est excepturi natus facere perspiciatis consequatur. Ut vel rerum possimus
                     officia corrupti libero exercitationem vitae!</p>
-                <button type="button" className="btn btn-dark p-3">Read More</button>
+                <button type="button" className="btn btn-dark p-3">Log out</button>
               </div>
             </div>
           </div>

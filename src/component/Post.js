@@ -37,7 +37,7 @@ class Post extends React.Component {
     render() {
         return (
         <>
-          <div className='row animate__animated animate__fadeInRightBig' style={{"animation-delay":`${this.props.delay}s`}}>
+          <div className='row animate__animated animate__fadeInRightBig' style={{animationDelay:`${this.props.delay}s`}}>
             <button  type="button" className="text-left button_style " data-toggle="modal" data-target={this.props.modalTarget}>
             <div className="card card_style" style={{width: 100 + '%'}}>
               <div className="row no-gutters">

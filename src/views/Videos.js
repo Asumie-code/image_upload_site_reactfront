@@ -1,5 +1,5 @@
 import React from 'react'; 
-import Contact from './Contact';
+import Post from '../component/Post';
 
 
 class Videos extends React.Component {
@@ -8,23 +8,10 @@ class Videos extends React.Component {
     render() {
         return (
            <>
-           <h1>hello</h1>
-           <h1>hello</h1>
-           <h1>hello</h1>
-           <h1>hello</h1>
-           <h1>hello</h1>
-           <h1>hello</h1>
-           <h1>hello</h1>
-           <h1>hello</h1>
-           <h1>hello</h1>
-           <h1>hello</h1>
-           <h1>hello</h1>
-           <h1>hello</h1>
-           <h1>hello</h1>
-           <h1>hello</h1>
-           <h1>hello</h1>
-           <h1>hello</h1>
-           <h1>hello</h1>
+            <Post />
+            <Post />
+            <Post />
+            <Post />
            </> 
            
         );
