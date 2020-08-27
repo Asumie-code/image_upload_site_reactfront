@@ -1,0 +1,171 @@
+@import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@1,300&display=swap");
+
+
+
+
+:root{
+  scrollbar-color: rgb(21, 18, 32) rgb(46,54,69) !important;
+  scrollbar-width: thin !important;
+}
+
+
+
+
+body {
+    
+    font-family: "Raleway", sans-serif;
+    padding-top: 3.5rem;
+    background: rgb(48, 47, 47);
+    overflow-x: hidden;
+}
+
+
+
+footer {
+    margin-top: 20px;
+    box-shadow: 0 0 10px black;
+}
+
+
+footer a {
+    color: white;
+    display: inline-block;
+    margin: 2px;
+    text-align: center;
+    width: 1rem;
+    margin-left: 3rem;
+}
+
+
+footer .footer-copyright a {
+    margin-left: 0;
+}
+
+footer a:hover {
+
+  color: rgba(18, 16, 34, 1);
+  animation: bounce;
+  animation-duration: 2s;
+
+}
+
+
+
+
+
+.social {
+    text-decoration: none;
+    background-color: white;
+    padding: 10px;
+    border-radius: 20px;
+    margin: 20px;
+    
+}
+
+
+.social:hover {
+    background-color: rgb(39, 38, 38);
+}
+
+
+
+.nav-link, .navbar-brand {
+    margin-left: 1rem;
+    border-radius: 4px;
+    text-align: center;
+    
+}
+
+.navbar-brand {
+    padding: 5px;
+}
+
+.nav-link:hover, .navbar-brand:hover {
+    background-color: rgb(45, 44, 49);
+    
+}
+
+.dropdown-item {
+    color: white;
+}
+
+.dropdown-item:hover {
+    background-color: rgb(45, 44, 49);
+    color: white;
+
+}
+
+
+main {
+    box-shadow: 0 0 10px black;
+    
+}
+
+
+.btn_style:hover {
+    background-color: rgba(18, 16, 34, 1);
+    animation: shakeX;
+    animation-duration: 2s;
+}
+
+
+
+.header_overlay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(43, 43, 43, 0.5);
+    
+    
+}
+
+
+.header_content {
+    text-align: center;
+    padding: 2rem;
+    margin: 0 10rem 0 10rem;
+    border-radius: 5px;
+    background-color: rgba(30, 34, 78, 0.05);
+    box-shadow: 0 0 10px black;
+    
+}
+
+.card_style {
+    background-color: rgba(18, 16, 34, 0.1);
+    box-shadow: 0 0 10px black;
+    color: rgb(207, 206, 206);
+}
+
+
+h1:hover {
+    
+    
+  
+    animation: pulse; /* referring directly to the animation's @keyframe declaration */
+    animation-duration: 2s; /* don't forget to set a duration! */
+}
+
+
+
+.button_style {
+    display: inline-block;
+    background-color: rgba(255, 255, 255, 0);
+    padding: 0;
+    margin: 15px 0 0 0;
+    border: none;
+    border-radius: 5px;
+}
+
+
+.button_style .card:hover  {
+    box-shadow: none;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+
+
+.trans_style {
+    animation: fadeInDown ;
+    animation-duration: 4s;
+}
+
