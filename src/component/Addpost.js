@@ -9,6 +9,8 @@ class Addpost extends React.Component {
         super(props);
         this.state = {
             img: '',
+            imgType: '',
+            imgName: '',
             title: '',
             description: ''
         }
@@ -18,6 +20,12 @@ class Addpost extends React.Component {
     handleFileChange = (e) => {
         let file = e.target.files[0];
         console.log(file)
+        this.setState({
+            imgType: file.type,
+            imgName: file.name
+        })
+
+
         let reader = new FileReader();
         reader.onload = (e) => {
             this.setState({
@@ -25,6 +33,7 @@ class Addpost extends React.Component {
             });
         }
         reader.readAsDataURL(file);
+        
     }
 
 
