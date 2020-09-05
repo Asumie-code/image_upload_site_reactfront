@@ -1,5 +1,6 @@
 import React from 'react';
 import Axios from 'axios';
+import getUser from '../helpers/Getuser';
 import $ from 'jquery';
 
 
@@ -8,6 +9,7 @@ class Addpost extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            user: {},
             img: '',
             imgType: '',
             imgName: '',
@@ -51,18 +53,20 @@ class Addpost extends React.Component {
 
     handleSumbit = (e) => {
         e.preventDefault();
-        let url = 'http://localhost:5000/gallery';
         let form = e.target; 
         let mdal = $('#addPost');
-        
-        
-        Axios.post(url, this.state).then((res) => {
-            console.log(res);
-            form[0].value = '';
-            form[1].value = '';
-            form[2].value = '';
-            mdal.modal('hide');
-        }).catch(e => {console.log(e)})
+        let url = 'http://localhost:5000/gallery';
+        getUser(this, () => {
+            Axios.post(url, this.state).then((res) => {
+                console.log(res);
+                form[0].value = '';
+                form[1].value = '';
+                form[2].value = '';
+                mdal.modal('hide');
+                this.props.refresh();
+            });
+        });
+
     }
 
 

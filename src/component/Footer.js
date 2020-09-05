@@ -23,18 +23,18 @@ class Footer extends React.Component {
                             <div className="mb-5 flex-center">
 
 
-                                <a href="#" className="fb-ic">
+                                <a href="https://www.instagram.com/asumie_art/" className="fb-ic">
                                     <FontAwesome name='facebook' className="fab fa-facebook-f fa-lg white-text mr-md-5 mr-3 fa-2x" /> 
                                 </a>
 
-                                <a href="#" className="tw-ic">
+                                <a href="https://www.instagram.com/asumie_art/" className="tw-ic">
                                     <FontAwesome name='twitter' className="fab fa-twitter fa-lg white-text mr-md-5 mr-3 fa-2x"/> 
                                 </a>
-                                <a href="#" className="ins-ic">
+                                <a href="https://www.instagram.com/asumie_art/" className="ins-ic">
                                     <FontAwesome name='instagram' className="fab fa-instagram fa-lg white-text mr-md-5 mr-3 fa-2x"/> 
                                 </a>
 
-                                <a href="#" className="pin-ic">
+                                <a href="https://www.instagram.com/asumie_art/" className="pin-ic">
                                     <FontAwesome name='pintrest' className="fab fa-pinterest fa-lg white-text fa-2x"/> 
                                 </a>
 

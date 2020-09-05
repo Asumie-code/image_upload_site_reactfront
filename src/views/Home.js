@@ -1,10 +1,12 @@
 import React from 'react';
 
 
+
 class Home extends React.Component {
 
 
   render() {
+    
     return (
 
       <main className="container-fluid ">
@@ -31,7 +33,7 @@ class Home extends React.Component {
                 unde autem maiores! Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos, enim non pariatur
                 voluptate repellendus, id est excepturi natus facere perspiciatis consequatur. Ut vel rerum possimus
                     officia corrupti libero exercitationem vitae!</p>
-                <button type="button" className="btn btn-dark p-3">Log out</button>
+                <button type="button" className="btn btn-dark p-3" onClick={this.props.logOutEvent}>Log out</button>
               </div>
             </div>
           </div>

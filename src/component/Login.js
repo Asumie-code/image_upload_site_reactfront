@@ -1,6 +1,37 @@
 import React from 'react';
 import Axios from 'axios';
+import Swal from 'sweetalert2';
+import { Redirect } from 'react-router-dom';
 import $ from 'jquery';
+
+const successToast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 3000,
+    icon: "success",
+    title: "Logged in successfully",
+    timerProgressBar: true,
+    onOpen: (toast) => {
+      toast.addEventListener("mouseenter", Swal.stopTimer);
+      toast.addEventListener("mouseleave", Swal.resumeTimer);
+    },
+  });
+  
+
+  const failToast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 3000,
+    icon: "error",
+    title: "Log in fail",
+    timerProgressBar: true,
+    onOpen: (toast) => {
+      toast.addEventListener("mouseenter", Swal.stopTimer);
+      toast.addEventListener("mouseleave", Swal.resumeTimer);
+    },
+  });
 
 
 
@@ -9,8 +40,15 @@ class Login extends React.Component {
         super(props);
         this.state = {
             email: '',
-            password: ''
+            password: '',
+            redirect: false
         }
+    }
+
+
+    componentDidMount() {
+        const jwt = localStorage.getItem('jwt');
+        if (jwt) this.setState({redirect: true});
     }
 
 
@@ -31,23 +69,28 @@ class Login extends React.Component {
 
     handleSumbit = (e) => {
         e.preventDefault();
-        // let url = 'http://localhost:5000/gallery';
-        // let form = e.target; 
-        // let mdal = $('#Login');
-        
-        
-        // Axios.post(url, this.state).then((res) => {
-        //     console.log(res);
-        //     form[0].value = '';
-        //     form[1].value = '';
-        //     form[2].value = '';
-        //     mdal.modal('hide');
-        // }).catch(e => {console.log(e)})
+        const url = 'http://localhost:5000/login';
+        const data = {
+            email: this.state.email,
+            password: this.state.password
+        };
+        Axios.post(url, data).then(res => {
+            localStorage.setItem('jwt', res.data.jwt);
+            let mdal = $('#Login')
+            mdal.modal('hide')
+            successToast.fire();
+            this.setState({
+                redirect: true
+            });
+        }).catch(() => {
+            failToast.fire();
+        })
     }
 
 
 
     render() {
+        if(this.state.redirect) return <Redirect to='/' />
         return (
             
             <>

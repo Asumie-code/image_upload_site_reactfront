@@ -1,5 +1,5 @@
 import React from 'react';
-import {NavLink , link } from 'react-router-dom';
+import {NavLink } from 'react-router-dom';
 
 class Navbar extends React.Component {
 
@@ -16,10 +16,10 @@ class Navbar extends React.Component {
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
               <ul className="navbar-nav mr-auto">
                 <li className="nav-item dropdown">
-                  <a className="nav-link dropdown-toggle active" href="#" id="navbarDropdownMenuLink" role="button"
+                  <button className="nav-link dropdown-toggle active bg-dark border-0"  id="navbarDropdownMenuLink" 
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Media
-                  </a>
+                  </button>
                   <div className="dropdown-menu  bg-dark" aria-labelledby="navbarDropdownMenuLink">
                     <NavLink className="dropdown-item" to='/gallery'>Gallery</NavLink>
                     <NavLink className="dropdown-item" to="/videos">Videos</NavLink>

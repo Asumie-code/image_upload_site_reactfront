@@ -1,6 +1,39 @@
 import React from 'react';
 import Axios from 'axios';
+import Swal from 'sweetalert2';
+import { Redirect }  from 'react-router-dom';
 import $ from 'jquery';
+
+
+
+const successToast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 3000,
+    icon: "success",
+    title: "Registred successfully",
+    timerProgressBar: true,
+    onOpen: (toast) => {
+        toast.addEventListener("mouseenter", Swal.stopTimer);
+        toast.addEventListener("mouseleave", Swal.resumeTimer);
+    },
+});
+
+
+const failToast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 3000,
+    icon: "error",
+    title: "Registration fail",
+    timerProgressBar: true,
+    onOpen: (toast) => {
+        toast.addEventListener("mouseenter", Swal.stopTimer);
+        toast.addEventListener("mouseleave", Swal.resumeTimer);
+    },
+});
 
 
 
@@ -12,8 +45,17 @@ class Register extends React.Component {
             lastName: '',
             email: '',
             password: '',
-            verifyPassword: ''
+            verifyPassword: '',
+            redirect: false
+
         }
+    }
+
+
+
+    componentDidMount() {
+        const jwt = localStorage.getItem('jwt');
+        if (jwt) this.setState({ redirect: true });
     }
 
 
@@ -26,39 +68,52 @@ class Register extends React.Component {
         this.setState({
             [e.target.name]: e.target.value
         });
-        
+
     }
 
 
 
     handleSumbit = (e) => {
         e.preventDefault();
-        // let url = 'http://localhost:5000/gallery';
-        // let form = e.target; 
-        // let mdal = $('#register');
-        
-        
-        // Axios.post(url, this.state).then((res) => {
-        //     console.log(res);
-        //     form[0].value = '';
-        //     form[1].value = '';
-        //     form[2].value = '';
-        //     mdal.modal('hide');
-        // }).catch(e => {console.log(e)})
+        const url = 'http://localhost:5000/register';
+        const data = {
+            name: this.state.name,
+            lastName: this.state.lastName,
+            email: this.state.email,
+            password: this.state.password,
+            verifyPassword: this.state.verifyPassword
+        };
+
+        console.log(this.state.password === this.state.verifyPassword)
+        Axios.post(url, data).then(res => {
+            localStorage.setItem('jwt', res.data.jwt);
+            let mdal = $('#register')
+            mdal.modal('hide')
+            successToast.fire();
+            this.setState({
+                redirect: true
+            });
+        }).catch(() => {
+            failToast.fire();
+        });
+
+
+
     }
 
 
 
     render() {
+        if (this.state.redirect) return <Redirect to="/" />;
         return (
-            
+
             <>
-                <div className="modal  p-xl-5 trans_style " id='register' style={{zIndex: 10000}}>
+                <div className="modal  p-xl-5 trans_style " id='register' style={{ zIndex: 10000 }}>
                     <button type="button" className="btn btn-primary text-white  close my-2 p-2" data-dismiss="modal"
                         aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <div className="card card_style  " style={{ width: 100 + "%" }}>
                         <div className="card-body">
-                            <form  onSubmit={this.handleSumbit} className='p-5 bg-dark'>
+                            <form onSubmit={this.handleSumbit} className='p-5 bg-dark'>
                                 <div className='form-group mt-2'>
                                     <label htmlFor="name">Name</label>
                                     <input onChange={this.handleChange} name='name' type="text" className="form-control" placeholder="name" id='name' required></input>

@@ -21,7 +21,7 @@ class Contact extends React.Component {
                     <div className="card text-dark bg-dark border-dark text-center">
                         <div className="card-body  text-light ">
                             <p className="card-text">Replies within one to two hours.</p>
-                            <a href="#" className="btn btn-primary btn_style">Submit Message</a>
+                            <button className="btn btn-primary btn_style">Submit Message</button>
                         </div>
                     </div>
                 </div>
