@@ -38,8 +38,6 @@ class Gallery extends React.Component {
 
 
 
-
-
      refreshPage = () => {
         this.getPosts();
     }

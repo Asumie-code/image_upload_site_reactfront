@@ -23,6 +23,7 @@ class Post extends React.Component {
       postDescription: this.props.description,
       postImg: this.props.img
     })
+ 
   }
 
 
@@ -31,7 +32,6 @@ class Post extends React.Component {
     let url = 'http://localhost:5000/gallery';
     getUser(this, () => {
       Axios.delete(url, { data: { id: this.state.id, user: this.state.user } }).then((res) => {
-        console.log(res.data);
         this.props.refresh();
       });
     });

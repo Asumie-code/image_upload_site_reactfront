@@ -84,7 +84,6 @@ class Register extends React.Component {
             verifyPassword: this.state.verifyPassword
         };
 
-        console.log(this.state.password === this.state.verifyPassword)
         Axios.post(url, data).then(res => {
             localStorage.setItem('jwt', res.data.jwt);
             let mdal = $('#register')

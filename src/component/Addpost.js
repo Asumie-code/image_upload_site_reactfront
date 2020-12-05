@@ -11,30 +11,17 @@ class Addpost extends React.Component {
         this.state = {
             user: {},
             img: '',
-            imgType: '',
-            imgName: '',
             title: '',
-            description: ''
+            description: '',
         }
     }
 
 
     handleFileChange = (e) => {
         let file = e.target.files[0];
-        console.log(file)
         this.setState({
-            imgType: file.type,
-            imgName: file.name
-        })
-
-
-        let reader = new FileReader();
-        reader.onload = (e) => {
-            this.setState({
-                img: e.target.result
-            });
-        }
-        reader.readAsDataURL(file);
+            img: file
+        });
         
     }
 
@@ -56,9 +43,20 @@ class Addpost extends React.Component {
         let form = e.target; 
         let mdal = $('#addPost');
         let url = 'http://localhost:5000/gallery';
+        let formData = new FormData();
+        formData.append('img', this.state.img);
+        formData.append('title', this.state.title);
+        formData.append('description', this.state.description);
+
         getUser(this, () => {
-            Axios.post(url, this.state).then((res) => {
-                console.log(res);
+            const config = {
+                method: 'post',
+                url,
+                params: { user: this.state.user },
+                data: formData,
+                headers: { 'Content-Type': 'multipart/form-data' } 
+            };
+            Axios(config).then((res) => {
                 form[0].value = '';
                 form[1].value = '';
                 form[2].value = '';
@@ -73,7 +71,6 @@ class Addpost extends React.Component {
 
     render() {
         return (
-            // <button type="button" className=" btn btn-primary p-3 my-3">Add</button>
             <>
                 <button type="button" className="btn btn-primary p-3 my-3 animate__animated animate__fadeInRightBig" data-toggle="modal" data-target="#addPost">Add Post</button>
                 <div className="modal  p-xl-5 trans_style" id='addPost'>

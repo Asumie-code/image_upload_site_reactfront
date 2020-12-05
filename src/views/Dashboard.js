@@ -53,7 +53,6 @@ class Dashboard extends React.Component {
   logOut = (e) => {
     e.preventDefault();
     localStorage.clear();
-    
     this.setState({
       redirect: true
     })

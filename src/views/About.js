@@ -38,7 +38,6 @@ class About extends React.Component {
     let url = 'http://localhost:5000/about';
     Axios.get(url).then(res => {
       this.setState({ about: res.data });
-      console.log(this.state.about)
 
     })
   }
@@ -52,23 +51,6 @@ class About extends React.Component {
   render() {
     return (
       <div className="container-xl">
-        {/* <div className="row">
-          <div className="col-7">
-
-            {this.state.about}
-          </div>
-          <div className="col-5">
-
-          </div>
-        </div> */}
-        {/* <div className="row">
-          <div className="col-7">
-          
-          </div>
-          <div className="col-5">
-
-          </div>
-        </div> */}
         {this.state.about.map((item, index) => {
           return (
             <AboutCard title={item.title} description={item.description} 
