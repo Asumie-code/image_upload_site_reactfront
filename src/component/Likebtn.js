@@ -1,34 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 
 
-class Likebtn extends React.Component {
-    constructor() {
-        super();
+function Likebtn() {
+    const [liked, setLiked] = useState(false);
 
-        this.state = {
-            liked: false
-        };
-    }
-
-    handleClick =  (e) => {
+   const  handleClick =  (e) => {
         e.preventDefault();
-        this.setState({
-            liked: !this.state.liked
-        });
-
+        setLiked(!liked);
     }
 
 
+    const label = liked ? 'Unlike' : 'Like'; 
+    const btnstyl = liked ? 'btn btn-primary' : 'btn  btn-dark';
+    return (
+        <button className={btnstyl} onClick={handleClick}>{label}</button>
+    ); 
 
-    render() {
-        const label = this.state.liked ? 'Unlike' : 'Like'; 
-        const btnstyl = this.state.liked ? 'btn btn-primary' : 'btn  btn-dark';
-        return (
-            <button className={btnstyl} onClick={this.handleClick}>{label}</button>
-        ); 
-    }
 }
+
+
 
 
 

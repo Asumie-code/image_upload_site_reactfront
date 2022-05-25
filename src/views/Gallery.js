@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Post from '../component/Post';
 import Modal from '../component/Modal';
 import Axios from 'axios';
@@ -8,62 +8,51 @@ import getUser from '../helpers/Getuser';
 
 
 
+function Gallery() {
+    const [posts, setPosts] = useState([]);
+    const [reload, setReload] = useState(false);
 
+    useEffect(() => {
+        getPosts();
+    }, [])
 
-
-class Gallery extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            user: {},
-            posts: [],
-            reload: false
-        }
-        
-    }
-
-    getPosts = () => {
+    const getPosts = () => {
         let url = 'http://localhost:5000/gallery';
-        getUser(this, () => {
-            Axios.get(url,  { params: this.state.user }).then(res => {
-                this.setState({ posts: res.data });
-            })   
+        getUser((user) => {
+            Axios.get(url, { params: user }).then(res => {
+                setPosts(res.data);
+            })
         });
     }
 
-
-    componentDidMount() {
-        this.getPosts();
+    const refreshPage = () => {
+        getPosts();
     }
 
+    return (
+        <div className="container-fluid " >
+            <div className="card-group flex-column">
+                <Addpost refresh={refreshPage} />
 
 
-     refreshPage = () => {
-        this.getPosts();
-    }
+                {posts.map((item, index) => {
+                    return (
 
-    render() {
-        return (
-            <div className="container-fluid " key={0}>
-                <div className="card-group flex-column">
-                    <Addpost  refresh={this.refreshPage} />
+                        <div key={index}>
+                            <Post img={item.img} title={item.title} description={item.description} modalTarget={`#modal_${index}`} key={item.id} id={item.id} delay={index * 0.5} refresh={refreshPage} />
+                            <Modal img={item.img} modalId={`modal_${index}`} key={`modal_${item.id}`} />
+                        </div>
 
-      
-                    {this.state.posts.map((item, index) => {
-                        return (
-                            
-                            <div key={index}>
-                                <Post img={item.img} title={item.title} description={item.description} modalTarget={`#modal_${index}`} key={item.id} id={item.id} delay={index * 0.5} refresh={this.refreshPage}/>
-                                <Modal img={item.img} modalId={`modal_${index}`} key={`modal_${item.id}`}/>
-                            </div>
-
-                        );
-                    })}
-                </div>
+                    );
+                })}
             </div>
+        </div>
 
-        );
-    }
+    );
+
 }
+
+
+
 
 export default Gallery;

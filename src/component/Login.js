@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 import Swal from 'sweetalert2';
 import { Redirect } from 'react-router-dom';
@@ -13,13 +13,13 @@ const successToast = Swal.mixin({
     title: "Logged in successfully",
     timerProgressBar: true,
     onOpen: (toast) => {
-      toast.addEventListener("mouseenter", Swal.stopTimer);
-      toast.addEventListener("mouseleave", Swal.resumeTimer);
+        toast.addEventListener("mouseenter", Swal.stopTimer);
+        toast.addEventListener("mouseleave", Swal.resumeTimer);
     },
-  });
-  
+});
 
-  const failToast = Swal.mixin({
+
+const failToast = Swal.mixin({
     toast: true,
     position: "top-end",
     showConfirmButton: false,
@@ -28,98 +28,90 @@ const successToast = Swal.mixin({
     title: "Log in fail",
     timerProgressBar: true,
     onOpen: (toast) => {
-      toast.addEventListener("mouseenter", Swal.stopTimer);
-      toast.addEventListener("mouseleave", Swal.resumeTimer);
+        toast.addEventListener("mouseenter", Swal.stopTimer);
+        toast.addEventListener("mouseleave", Swal.resumeTimer);
     },
-  });
+});
 
 
 
-class Login extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            email: '',
-            password: '',
-            redirect: false
-        }
-    }
+function Login() {
+    const [formInputs, setFormInputs] = useState({
+        email: '',
+        password: ''
+    });
+    const [redirect, setRedirect] = useState(false);
 
-
-    componentDidMount() {
+    useEffect(() => {
         const jwt = localStorage.getItem('jwt');
-        if (jwt) this.setState({redirect: true});
-    }
+        if (jwt) setRedirect(true);
+    }, []);
 
 
- 
-
-
-
-
-
-    handleChange = (e) => {
-        this.setState({
+    const handleChange = (e) => {
+        setFormInputs({
+            ...formInputs,
             [e.target.name]: e.target.value
         });
-        
+
     }
 
 
-
-    handleSumbit = (e) => {
+    const handleSumbit = (e) => {
         e.preventDefault();
         const url = 'http://localhost:5000/login';
         const data = {
-            email: this.state.email,
-            password: this.state.password
+            email: formInputs.email,
+            password: formInputs.password
         };
         Axios.post(url, data).then(res => {
             localStorage.setItem('jwt', res.data.jwt);
             let mdal = $('#Login')
             mdal.modal('hide')
             successToast.fire();
-            this.setState({
-                redirect: true
-            });
+            setRedirect(true);
         }).catch(() => {
             failToast.fire();
         })
     }
 
 
+    if (redirect) return <Redirect to='/' />
+    return (
 
-    render() {
-        if(this.state.redirect) return <Redirect to='/' />
-        return (
-            
-            <>
-                <div className="modal my-5 p-xl-5 trans_style " id='Login' >
-                    <button type="button" className="btn btn-primary text-white  close my-2 p-2" data-dismiss="modal"
-                        aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <div className="card card_style " style={{ width: 100 + "%" }}>
-                        <div className="card-body">
-                            <form  onSubmit={this.handleSumbit} className='p-5 bg-dark'>
-                                <div className='form-group mt-2'>
-                                    <label htmlFor="email">Email</label>
-                                    <input onChange={this.handleChange} name='email' type="email" className="form-control" placeholder="email" id='email' value={this.state.email} required></input>
-                                </div>
-                                <div className='form-group mt-2'>
-                                    <label htmlFor="password">Password</label>
-                                    <input onChange={this.handleChange} name='password' type="password" className="form-control" placeholder="Password" value={this.state.password} id='pass' required></input>
-                                </div>
-                                <button type="submit" className="btn btn-primary">Submit</button>
-                            </form>
-
-                        </div>
+        <>
+            <div className="modal my-5 p-xl-5 trans_style " id='Login' >
+                <button type="button" className="btn btn-primary text-white  close my-2 p-2" data-dismiss="modal"
+                    aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <div className="card card_style " style={{ width: 100 + "%" }}>
+                    <div className="card-body">
+                        <form onSubmit={handleSumbit} className='p-5 bg-dark'>
+                            <div className='form-group mt-2'>
+                                <label htmlFor="email">Email</label>
+                                <input onChange={handleChange} name='email' type="email" className="form-control" placeholder="email" id='email' value={formInputs.email} required></input>
+                            </div>
+                            <div className='form-group mt-2'>
+                                <label htmlFor="password">Password</label>
+                                <input onChange={handleChange} name='password' type="password" className="form-control" placeholder="Password" value={formInputs.password} id='pass' required></input>
+                            </div>
+                            <button type="submit" className="btn btn-primary">Submit</button>
+                        </form>
 
                     </div>
 
                 </div>
-            </>
-        );
-    }
+
+            </div>
+        </>
+    );
+
+
+
 }
+
+
+
+
 
 
 

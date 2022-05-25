@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from '../component/Navbar';
 import Footer from '../component/Footer';
 import Home from './Home';
@@ -7,73 +7,53 @@ import Videos from './Videos';
 import Contact from './Contact';
 import About from './About';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { Redirect }  from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import Axios from 'axios';
 
 
 
+function Dashboard() {
+  const [user, setUser] = useState({});
+  const [redirect, setRedirect] = useState(false);
 
-
-
-
-class Dashboard extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state= {
-      user: {},
-      redirect: false
-    }
-    
-  }
-  
-
-  componentDidMount() {
+  useEffect(() => {
     const jwt = localStorage.getItem('jwt');
-    if(jwt === null) {
-      this.setState({ redirect: true });
+    if (jwt === null) {
+      setRedirect(true);
 
     } else {
       Axios.defaults.headers.common['Authorization'] = `Bearer ${jwt}`;
       Axios.defaults.headers.common['Content-Type'] = `application/json`;
       const url = 'http://localhost:5000/user';
-      Axios.get(url).then( res => {
-        this.setState({user: res.data});
-      }).catch( (e) => {
+      Axios.get(url).then(res => {
+        setUser(res.data);
+      }).catch((e) => {
         console.log(e);
         localStorage.clear();
-        this.setState({redirect: true});
+        setRedirect(true);
       });
-      
+
 
     }
-    
-  }
+  }, [])
 
-
-  logOut = (e) => {
+  const logOut = (e) => {
     e.preventDefault();
     localStorage.clear();
-    this.setState({
-      redirect: true
-    })
+    setRedirect(true);
   }
 
 
-
-
-
-  render() {
-    
-    if (this.state.redirect) return  <Redirect to='/startup' />
+  if (redirect) return <Redirect to='/startup' />
     return (
       <Router>
         <Navbar />
         <Switch>
           <Route exact strict path='/'>
-            <Home logOutEvent={this.logOut} name={this.state.user.name} />
+            <Home logOutEvent={logOut} name={user.name} />
           </Route>
           <Route exact strict path='/gallery'>
-            <Gallery  />
+            <Gallery />
           </Route>
           <Route exact strict path='/videos'>
             <Videos />
@@ -90,9 +70,12 @@ class Dashboard extends React.Component {
       </Router>
 
     );
-  }
 
 }
+
+
+
+
 
 
 

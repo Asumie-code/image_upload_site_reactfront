@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 import Swal from 'sweetalert2';
-import { Redirect }  from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import $ from 'jquery';
 
 
@@ -37,51 +37,42 @@ const failToast = Swal.mixin({
 
 
 
-class Register extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            name: '',
-            lastName: '',
-            email: '',
-            password: '',
-            verifyPassword: '',
-            redirect: false
 
-        }
-    }
+function Register() {
 
+    const [formInputs, setFormInputs] = useState({
+        name: '',
+        lastName: '',
+        email: '',
+        password: '',
+        verifyPassword: ''
+    });
+    const [redirect, setRedirect] = useState(false);
 
-
-    componentDidMount() {
+    useEffect(() => {
+        // check for the authorization if non redirect
         const jwt = localStorage.getItem('jwt');
-        if (jwt) this.setState({ redirect: true });
-    }
+        if (jwt) setRedirect({ redirect: true });
+    }, [])
 
-
-
-
-
-
-
-    handleChange = (e) => {
-        this.setState({
+    const handleChange = (e) => {
+        setFormInputs({
+            ...formInputs,
             [e.target.name]: e.target.value
         });
-
     }
 
 
-
-    handleSumbit = (e) => {
+    const handleSumbit = (e) => {
+        console.log(formInputs)
         e.preventDefault();
         const url = 'http://localhost:5000/register';
         const data = {
-            name: this.state.name,
-            lastName: this.state.lastName,
-            email: this.state.email,
-            password: this.state.password,
-            verifyPassword: this.state.verifyPassword
+            name: formInputs.name,
+            lastName: formInputs.lastName,
+            email: formInputs.email,
+            password: formInputs.password,
+            verifyPassword: formInputs.verifyPassword
         };
 
         Axios.post(url, data).then(res => {
@@ -89,21 +80,15 @@ class Register extends React.Component {
             let mdal = $('#register')
             mdal.modal('hide')
             successToast.fire();
-            this.setState({
+            setRedirect({
                 redirect: true
             });
         }).catch(() => {
             failToast.fire();
         });
-
-
-
     }
 
-
-
-    render() {
-        if (this.state.redirect) return <Redirect to="/" />;
+    if (redirect) return <Redirect to="/" />;
         return (
 
             <>
@@ -112,26 +97,26 @@ class Register extends React.Component {
                         aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <div className="card card_style  " style={{ width: 100 + "%" }}>
                         <div className="card-body">
-                            <form onSubmit={this.handleSumbit} className='p-5 bg-dark'>
+                            <form onSubmit={handleSumbit} className='p-5 bg-dark'>
                                 <div className='form-group mt-2'>
                                     <label htmlFor="name">Name</label>
-                                    <input onChange={this.handleChange} name='name' type="text" className="form-control" placeholder="name" id='name' required></input>
+                                    <input onChange={handleChange} name='name' type="text" className="form-control" placeholder="name" id='name' required></input>
                                 </div>
                                 <div className='form-group mt-2'>
                                     <label htmlFor="lastName">last Name</label>
-                                    <input onChange={this.handleChange} name='lastName' type="text" className="form-control" placeholder="Last Name" id='lastName' required></input>
+                                    <input onChange={handleChange} name='lastName' type="text" className="form-control" placeholder="Last Name" id='lastName' required></input>
                                 </div>
                                 <div className='form-group mt-2'>
                                     <label htmlFor="email">Email</label>
-                                    <input onChange={this.handleChange} name='email' type="email" className="form-control" placeholder="email" id='email' value={this.state.email} required></input>
+                                    <input onChange={handleChange} name='email' type="email" className="form-control" placeholder="email" id='email' value={formInputs.email} required></input>
                                 </div>
                                 <div className='form-group mt-2'>
                                     <label htmlFor="password">Password</label>
-                                    <input onChange={this.handleChange} name='password' type="password" className="form-control" placeholder="Password" value={this.state.password} id='pass' required></input>
+                                    <input onChange={handleChange} name='password' type="password" className="form-control" placeholder="Password" value={formInputs.password} id='pass' required></input>
                                 </div>
                                 <div className='form-group mt-2'>
                                     <label htmlFor="verifyPassword">Verify Password</label>
-                                    <input onChange={this.handleChange} name='verifyPassword' type="password" className="form-control" placeholder="Verify Password" value={this.state.verifyPassword} id='verifypass' required></input>
+                                    <input onChange={handleChange} name='verifyPassword' type="password" className="form-control" placeholder="Verify Password" value={formInputs.verifyPassword} id='verifypass' required></input>
                                 </div>
 
                                 <button type="submit" className="btn btn-primary">Submit</button>
@@ -144,8 +129,11 @@ class Register extends React.Component {
                 </div>
             </>
         );
-    }
+
+
+
 }
+
 
 
 
