@@ -7,9 +7,6 @@ import getUser from '../helpers/Getuser';
 
 
 function Post(props) {
-  const [state, setState] = useState({
-    user: ''
-  }); 
   const [postData, setPostData] = useState({
     id: '',
     postTitle: '',

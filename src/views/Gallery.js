@@ -10,7 +10,6 @@ import getUser from '../helpers/Getuser';
 
 function Gallery() {
     const [posts, setPosts] = useState([]);
-    const [reload, setReload] = useState(false);
 
     useEffect(() => {
         getPosts();

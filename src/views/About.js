@@ -41,20 +41,6 @@ function About() {
 }
 
 
-class AboutCard2 extends React.Component {
-
-
-  render() {
-    return (
-      <div className={`card m-2  card_style animate__animated animate__${this.props.fadeInDir}`} style={{ width: 100 + "%" }}>
-        <div className="card-body">
-          <h4>{this.props.title}</h4>
-          <p className="card-text">{this.props.description}</p>
-        </div>
-      </div>
-    );
-  }
-}
 
 
 
