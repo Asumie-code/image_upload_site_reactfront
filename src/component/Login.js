@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import Axios from 'axios';
 import Swal from 'sweetalert2';
 import { Redirect } from 'react-router-dom';
 import $ from 'jquery';
+import { useLogUserMutation } from '../features/api/apiSlice'
 
 const successToast = Swal.mixin({
     toast: true,
@@ -36,6 +36,7 @@ const failToast = Swal.mixin({
 
 
 function Login() {
+    const [login] = useLogUserMutation(); 
     const [formInputs, setFormInputs] = useState({
         email: '',
         password: ''
@@ -57,22 +58,44 @@ function Login() {
     }
 
 
-    const handleSumbit = (e) => {
+    const handleSumbit =  async (e) => {
         e.preventDefault();
-        const url = 'http://localhost:5000/login';
         const data = {
             email: formInputs.email,
             password: formInputs.password
         };
-        Axios.post(url, data).then(res => {
-            localStorage.setItem('jwt', res.data.jwt);
-            let mdal = $('#Login')
-            mdal.modal('hide')
-            successToast.fire();
-            setRedirect(true);
-        }).catch(() => {
+
+
+
+
+        try {
+         const response =  await login({data}).unwrap();
+         console.log( response) 
+            if( response) {
+                localStorage.setItem('jwt', response.jwt);
+                    let mdal = $('#Login')
+                    mdal.modal('hide')
+                    successToast.fire();
+                    setRedirect(true);
+            }
+        } catch(err) {
+            console.log(err); 
             failToast.fire();
-        })
+        }
+
+
+
+
+
+        // Axios.post(url, data).then(res => {
+        //     localStorage.setItem('jwt', res.data.jwt);
+        //     let mdal = $('#Login')
+        //     mdal.modal('hide')
+        //     successToast.fire();
+        //     setRedirect(true);
+        // }).catch(() => {
+        //     failToast.fire();
+        // })
     }
 
 

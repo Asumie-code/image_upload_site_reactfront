@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
-import Axios from 'axios';
-import getUser from '../helpers/Getuser';
+import { useAddPostMutation, selectUser } from '../features/api/apiSlice';
+import { useSelector } from 'react-redux'; 
 import $ from 'jquery';
 
-function Addpost(props) {
+
+function Addpost() {
+    const [addPost] = useAddPostMutation(); 
+    const user = useSelector(state => selectUser(state))
+    // ToDo change to uncontrolled component
     const [formInputs, setFormInputs] = useState({
         img: '',
         title: '',
-        description: ''
+        description: 'something'
     });
 
     const handleFileChange = (e) => {
@@ -26,32 +30,26 @@ function Addpost(props) {
 
     }
 
-   const  handleSumbit = (e) => {
+   const  handleSumbit = async (e) => {
+
+        
         e.preventDefault();
         let form = e.target;
         let mdal = $('#addPost');
-        let url = 'http://localhost:5000/gallery';
         let formData = new FormData();
         formData.append('img', formInputs.img);
         formData.append('title', formInputs.title);
         formData.append('description', formInputs.description);
-
-        getUser((user) => {
-            const config = {
-                method: 'post',
-                url,
-                params: { user: user },
-                data: formData,
-                headers: { 'Content-Type': 'multipart/form-data' }
-            };
-            Axios(config).then((res) => {
+        try{
+        await addPost({initialPost : formData, user}).unwrap();
                 form[0].value = '';
                 form[1].value = '';
                 form[2].value = '';
                 mdal.modal('hide');
-               props.refresh();
-            });
-        });
+              
+        } catch(err) {
+            console.log(err)
+        }
 
     }
 

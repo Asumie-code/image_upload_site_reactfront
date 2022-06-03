@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import Axios from 'axios';
 import Swal from 'sweetalert2';
 import { Redirect } from 'react-router-dom';
 import $ from 'jquery';
+import { useRegisterUserMutation } from '../features/api/apiSlice';
 
 
 
@@ -39,7 +39,7 @@ const failToast = Swal.mixin({
 
 
 function Register() {
-
+    const [register] = useRegisterUserMutation(); 
     const [formInputs, setFormInputs] = useState({
         name: '',
         lastName: '',
@@ -50,7 +50,6 @@ function Register() {
     const [redirect, setRedirect] = useState(false);
 
     useEffect(() => {
-        // check for the authorization if non redirect
         const jwt = localStorage.getItem('jwt');
         if (jwt) setRedirect({ redirect: true });
     }, [])
@@ -63,10 +62,8 @@ function Register() {
     }
 
 
-    const handleSumbit = (e) => {
-        console.log(formInputs)
+    const handleSumbit = async (e) => {
         e.preventDefault();
-        const url = 'http://localhost:5000/register';
         const data = {
             name: formInputs.name,
             lastName: formInputs.lastName,
@@ -75,17 +72,23 @@ function Register() {
             verifyPassword: formInputs.verifyPassword
         };
 
-        Axios.post(url, data).then(res => {
-            localStorage.setItem('jwt', res.data.jwt);
-            let mdal = $('#register')
-            mdal.modal('hide')
-            successToast.fire();
-            setRedirect({
-                redirect: true
-            });
-        }).catch(() => {
+
+        try {
+            const response = await register({data}).unwrap(); 
+            if(response) {
+                localStorage.setItem('jwt', response.jwt);
+                let mdal = $('#register')
+                mdal.modal('hide')
+                successToast.fire();
+                setRedirect({
+                    redirect: true
+                });
+            }
+        } catch(err) {
+            console.log(err); 
             failToast.fire();
-        });
+        }
+
     }
 
     if (redirect) return <Redirect to="/" />;

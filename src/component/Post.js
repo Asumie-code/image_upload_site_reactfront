@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { useDeletePostMutation, selectUser } from '../features/api/apiSlice';
+import { useSelector } from 'react-redux';
 
-import Axios from 'axios';
-import getUser from '../helpers/Getuser';
 
 
 
@@ -14,32 +14,35 @@ function Post(props) {
     postImg: ''
   })
 
+  const user = useSelector(state => selectUser(state))
+  const [deletePost,] = useDeletePostMutation();
+
 
   useEffect(() => {
-    setPostData({
-      ...postData,
-      id: props.id,
-      postTitle: props.title,
-      postDescription: props.description,
-      postImg: props.img
 
-    })
-  }, []);
+    setPostData((prevPostData)=> ({
+      ...prevPostData,
+        id: props.id,
+        postTitle: props.title,
+        postDescription: props.description,
+        postImg: props.img
+      
+    }))
+  }, [props.id, props.title ,props.description ,props.img]);
 
   const handleSumbit = (e) => {
     e.prevenDefault();
 
   }
 
-  const handleDelete = (e) => {
+  const handleDelete = async (e) => {
     e.preventDefault();
-    let url = 'http://localhost:5000/gallery';
-    getUser((user) => {
-      
-      Axios.delete(url, { data: { id: postData.id, user: user } }).then((res) => {
-        props.refresh();
-      });
-    });
+    try {
+      await deletePost({postData, user}).unwrap();
+    } catch(err) {
+      console.log(err); 
+    }
+    
   }
 
 
