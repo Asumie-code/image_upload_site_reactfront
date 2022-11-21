@@ -10,7 +10,7 @@ const axiosBaseQuery =
                 if(jwt) {
                     Axios.defaults.headers.common['Authorization'] = `Bearer ${jwt}`;
                     Axios.defaults.headers.common['Content-Type'] = `application/json`;
-                }
+                } 
                 const result = await Axios({ url: baseUrl + url, method, data, params })
                 return { data: result.data }
             } catch (axiosError) {
